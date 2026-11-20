@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>来源字段映射管理平台</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo">⇄</span>
+        <div>
+          <h1>来源字段映射管理平台</h1>
+          <p>变更发现 · 并行审批 · 生效批次 · 版本化重放 · 回滚</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn ghost" id="btn-seed">载入演示数据</button>
+        <button class="btn ghost" id="btn-refresh">刷新</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar">
+        <h2>数据来源</h2>
+        <div id="source-list" class="source-list"></div>
+        <button class="btn block" id="btn-add-source">＋ 新增来源</button>
+
+        <div class="sidebar-section">
+          <h3>采集器发现</h3>
+          <p class="hint">模拟采集器上报观测字段，自动生成待审批变更单</p>
+          <button class="btn block primary" id="btn-discovery">上报字段发现</button>
+        </div>
+      </aside>
+
+      <section class="content">
+        <nav class="tabs">
+          <button class="tab active" data-tab="changes">变更与审批</button>
+          <button class="tab" data-tab="versions">版本与差异</button>
+          <button class="tab" data-tab="batches">生效批次</button>
+          <button class="tab" data-tab="replay">历史重放</button>
+        </nav>
+
+        <div class="tab-panel active" id="tab-changes">
+          <div class="panel-head">
+            <h2>待审批变更单</h2>
+            <div class="legend">
+              <span class="tag safe">safe 安全</span>
+              <span class="tag compatible">compatible 兼容</span>
+              <span class="tag blocked">blocked 阻断</span>
+            </div>
+          </div>
+          <div id="change-list"></div>
+        </div>
+
+        <div class="tab-panel" id="tab-versions">
+          <div class="panel-head">
+            <h2>映射版本时间轴</h2>
+            <div class="diff-picker">
+              <label>差异比较 <input type="number" id="diff-from" min="1" style="width:64px" /> →
+                <input type="number" id="diff-to" min="1" style="width:64px" />
+              </label>
+              <button class="btn small" id="btn-diff">查看差异</button>
+            </div>
+          </div>
+          <div id="version-timeline"></div>
+          <div id="diff-output"></div>
+        </div>
+
+        <div class="tab-panel" id="tab-batches">
+          <div class="panel-head"><h2>生效批次（审计与回滚入口）</h2></div>
+          <div id="batch-list"></div>
+        </div>
+
+        <div class="tab-panel" id="tab-replay">
+          <div class="panel-head"><h2>历史数据重放（按时间点解析当时映射）</h2></div>
+          <div class="replay-form">
+            <label>重放时间点
+              <input type="datetime-local" id="replay-at" />
+            </label>
+            <label class="grow">原始记录（JSON 数组）
+              <textarea id="replay-records" rows="6">[{ "order_id": "o-1001", "amount": 19.9 }]</textarea>
+            </label>
+            <button class="btn primary" id="btn-replay">执行重放</button>
+          </div>
+          <div id="replay-output"></div>
+        </div>
+      </section>
+    </main>
+
+    <div id="modal-root"></div>
+    <div id="toast-root"></div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
